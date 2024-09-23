@@ -1,5 +1,6 @@
 package org.translation;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
@@ -21,11 +22,7 @@ public class Main {
      */
     public static void main(String[] args) {
 
-        // TODO Task: once you finish the JSONTranslator,
-        //            you can use it here instead of the InLabByHandTranslator
-        //            to try out the whole program!
-        // Translator translator = new JSONTranslator(null);
-        Translator translator = new InLabByHandTranslator();
+        Translator translator = new JSONTranslator(null);
 
         runProgram(translator);
     }
@@ -38,24 +35,20 @@ public class Main {
      */
     public static void runProgram(Translator translator) {
         String quit = "quit";
+        CountryCodeConverter converter = new CountryCodeConverter();
+        LanguageCodeConverter langConverter = new LanguageCodeConverter();
         while (true) {
             String country = promptForCountry(translator);
             if (quit.equals(country)) {
                 break;
             }
-            // TODO Task: Once you switch promptForCountry so that it returns the country
-            //            name rather than the 3-letter country code, you will need to
-            //            convert it back to its 3-letter country code when calling promptForLanguage
-            String language = promptForLanguage(translator, country);
+            String language = promptForLanguage(translator, converter.fromCountry(country));
             if (language.equals(quit)) {
                 break;
             }
-            // TODO Task: Once you switch promptForLanguage so that it returns the language
-            //            name rather than the 2-letter language code, you will need to
-            //            convert it back to its 2-letter language code when calling translate.
-            //            Note: you should use the actual names in the message printed below though,
-            //            since the user will see the displayed message.
-            System.out.println(country + " in " + language + " is " + translator.translate(country, language));
+            String langCode = langConverter.fromLanguage(language);
+            String countryCode = converter.fromCountry(country);
+            System.out.println(country + " in " + language + " is " + translator.translate(countryCode, langCode));
             System.out.println("Press enter to continue or quit to exit.");
             Scanner s = new Scanner(System.in);
             String textTyped = s.nextLine();
@@ -68,11 +61,12 @@ public class Main {
 
     // Note: CheckStyle is configured so that we don't need javadoc for private methods
     private static String promptForCountry(Translator translator) {
+        CountryCodeConverter converter = new CountryCodeConverter();
         List<String> countries = translator.getCountries();
-        // TODO Task: replace the following println call, sort the countries alphabetically,
-        //            and print them out; one per line
-        //      hint: class Collections provides a static sort method
-        // TODO Task: convert the country codes to the actual country names before sorting
+        for (int i = 0; i < countries.size(); i++) {
+            countries.set(i, converter.fromCountryCode(countries.get(i)));
+        }
+        Collections.sort(countries);
         System.out.println(countries);
 
         System.out.println("select a country from above:");
@@ -84,10 +78,14 @@ public class Main {
 
     // Note: CheckStyle is configured so that we don't need javadoc for private methods
     private static String promptForLanguage(Translator translator, String country) {
+        LanguageCodeConverter converter = new LanguageCodeConverter();
 
-        // TODO Task: replace the line below so that we sort the languages alphabetically and print them out; one per line
-        // TODO Task: convert the language codes to the actual language names before sorting
-        System.out.println(translator.getCountryLanguages(country));
+        List<String> langs = translator.getCountryLanguages(country);
+        for (int i = 0; i < langs.size(); i++) {
+            langs.set(i, converter.fromLanguageCode(langs.get(i)));
+        }
+        Collections.sort(langs);
+        System.out.println(langs);
 
         System.out.println("select a language from above:");
 
