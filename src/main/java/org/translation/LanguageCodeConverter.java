@@ -12,8 +12,8 @@ import java.util.Map;
  * This class provides the service of converting language codes to their names.
  */
 public class LanguageCodeConverter {
-    private Map toLang;
-    private Map toCode;
+    private Map<String, String> toLang;
+    private Map<String, String> toCode;
 
     /**
      * Default constructor which will load the language codes from "language-codes.txt"
@@ -33,8 +33,8 @@ public class LanguageCodeConverter {
         try {
             List<String> lines = Files.readAllLines(Paths.get(getClass()
                     .getClassLoader().getResource(filename).toURI()));
-            toCode = new HashMap();
-            toLang = new HashMap();
+            toCode = new HashMap<>();
+            toLang = new HashMap<>();
             for (String line : lines) {
                 String[] values = line.split("\t");
                 toLang.put(values[0], values[1]);
@@ -54,7 +54,7 @@ public class LanguageCodeConverter {
      * @return the name of the language corresponding to the code
      */
     public String fromLanguageCode(String code) {
-        return toLang.get(code).toString();
+        return toLang.get(code);
     }
 
     /**
@@ -63,7 +63,7 @@ public class LanguageCodeConverter {
      * @return the 2-letter code of the language
      */
     public String fromLanguage(String language) {
-        return toCode.get(language).toString();
+        return toCode.get(language);
     }
 
     /**
