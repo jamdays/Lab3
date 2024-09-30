@@ -37,8 +37,8 @@ public class LanguageCodeConverter {
 
             codetoname = new HashMap<String, String>();
             nametocode = new HashMap<String, String>();
-            for (String line : lines) {
-                String[] values = line.split("\t");
+            for (int i = 1; i < lines.size(); i++) {
+                String[] values = lines.get(i).split("\t");
                 codetoname.put(values[1], values[0]);
                 nametocode.put(values[0], values[1]);
             }

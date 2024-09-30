@@ -37,10 +37,10 @@ public class CountryCodeConverter {
 
             codetoname = new HashMap<String, String>();
             nametocode = new HashMap<String, String>();
-            for (String line : lines) {
-                String[] values = line.split("\t");
-                codetoname.put(values[2], values[0]);
-                nametocode.put(values[0], values[2]);
+            for (int i = 1; i < lines.size(); i++) {
+                String[] values = lines.get(i).split("\t");
+                codetoname.put(values[2].toLowerCase(), values[0]);
+                nametocode.put(values[0], values[2].toLowerCase());
             }
 
         }
