@@ -19,7 +19,9 @@ public class JSONDemo {
         System.out.println(jsonArray.length());
         // note that we can use jsonArray.get, but its return type is just Object,
         // which isn't as useful as below.
+        System.out.println(jsonArray.isNull(0));
         JSONObject jsonObject = jsonArray.getJSONObject(0);
+        System.out.println(!jsonArray.getJSONObject(0).isNull("key1"));
         System.out.println(jsonObject);
         System.out.println(jsonObject.getString("key1"));
         System.out.println(jsonObject.getInt("key2"));

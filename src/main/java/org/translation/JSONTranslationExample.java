@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -40,9 +41,6 @@ public class JSONTranslationExample {
         return canada.getString("es");
     }
 
-    // TODO Task: Complete the method below to generalize the above to get the country name
-    //            for any country code and language code from sample.json.
-
     /**
      * Returns the name of the country based on the provided country and language codes.
      * @param countryCode the country, as its three-letter code.
@@ -50,7 +48,19 @@ public class JSONTranslationExample {
      * @return the translation of country to the given language or "Country not found" if there is no translation.
      */
     public String getCountryNameTranslation(String countryCode, String languageCode) {
-        return "Country not found";
+
+        int i1 = 0;
+        while (true) {
+            if (jsonArray.isNull(i1)) {
+                return "Country not found";
+            }
+            else if (jsonArray.getJSONObject(i1).getString("alpha3").equals(countryCode)
+                    && !jsonArray.getJSONObject(i1).isNull(languageCode)) {
+                return jsonArray.getJSONObject(i1).getString(languageCode);
+            }
+            i1++;
+        }
+
     }
 
     /**
